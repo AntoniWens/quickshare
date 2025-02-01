@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
                         binding.progressBar2.isVisible = false
                         list.clear()
                         snapshot.children.forEach { e ->
-                            if (e.child("uid").value.toString() == firebaseAuth.currentUser?.uid) {
+                            if (e.child("uid").value.toString() == firebaseAuth.currentUser?.uid && e.child("status").value.toString() == "1") {
                                 skills.clear()
                                 if (snapshot.exists()) {
                                     e.child("skill").children.forEach { s ->
@@ -161,10 +161,7 @@ class HomeFragment : Fragment() {
         binding.searchCard.isVisible = preferences.getUser().role == 1
 
         binding.searchEdt.doOnTextChanged { text, start, before, count ->
-            if(text?.isNotBlank() == true){
-                Log.d("2504", "aa")
-                adapter?.filter?.filter(text)
-            }
+            adapter?.filter?.filter(text)
         }
 
     }

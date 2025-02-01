@@ -62,6 +62,8 @@ class JobAdapter(list: ArrayList<Job>) : RecyclerView.Adapter<JobAdapter.ViewHol
                 for (item: Job in listMFull) {
                     if (item.jobTitle.lowercase(Locale.ROOT).contains(filterPattern)) {
                         filteredListToneModel.add(item)
+                    } else if (item.companyName.lowercase(Locale.ROOT).contains(filterPattern)) {
+                        filteredListToneModel.add(item)
                     }
                 }
             }

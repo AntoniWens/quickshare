@@ -2,6 +2,7 @@ package com.example.quickhire
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -34,14 +35,10 @@ class DetailVacancyActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
         binding = ActivityDetailVacancyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
-            insets
-        }
+
 
         val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra("job", Job::class.java)
@@ -97,20 +94,20 @@ class DetailVacancyActivity : AppCompatActivity() {
 
         binding.applicantsBtn.setOnClickListener {
             if(preferences.getUser().role == 1) {
-                Log.d("2504", "aaas")
                 database.reference.child("bookmark/${firebaseAuth.currentUser?.uid}/${data?.jobId}").get().addOnSuccessListener {
                     if(!it.exists()){
-                        Log.d("2504", "aaa")
                         database.reference.child("bookmark/${firebaseAuth.currentUser?.uid}/${data?.jobId}").setValue(data).addOnSuccessListener {
 
                         }
                     } else {
-                        Log.d("2504", "aaass")
                         database.reference.child("bookmark/${firebaseAuth.currentUser?.uid}/${data?.jobId}").removeValue()
                     }
                 }.addOnFailureListener {
-                    Log.d("2504", "ssss")
                 }
+            } else {
+                val intent = Intent(this, ApplicantActivity::class.java)
+                intent.putExtra("id", data?.jobId)
+                startActivity(intent)
             }
         }
 
@@ -135,7 +132,7 @@ class DetailVacancyActivity : AppCompatActivity() {
                 binding.okBtn.setOnClickListener {
                     d.dismiss()
                     progress.show()
-                    database.reference.child("jobs/${firebaseAuth.currentUser?.uid}").updateChildren(
+                    database.reference.child("jobs/${data?.jobId}").updateChildren(
                         mapOf("status" to 0)
                     ).addOnSuccessListener {
                         progress.dismiss()
@@ -157,6 +154,7 @@ class DetailVacancyActivity : AppCompatActivity() {
                 progress.show()
 
                 database.reference.child("applicants/${data?.uid}/$id").setValue(datas).addOnSuccessListener {
+                    database.reference.child("jobs/${data?.jobId}/applied/$id").setValue(datas)
                     database.reference.child("users/${firebaseAuth.currentUser?.uid}/jobs/${data?.jobId}").setValue(data)
                     progress.dismiss()
                     showScAppliedDialog()

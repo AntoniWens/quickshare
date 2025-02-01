@@ -4,7 +4,8 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorSecondaryContainer">@color/white</item>
-        <item name="android:statusBarColor">@color/f4CCC7</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.QuickHire" parent="Base.Theme.QuickHire" />
