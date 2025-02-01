@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "190235128837",
+    "project_id": "quickhire-fff4b",
+    "storage_bucket": "quickhire-fff4b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190235128837:android:a04b04062c00cdc398986c",
+        "android_client_info": {
+          "package_name": "com.example.quickhire"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHopXQnl_G4-jXZEOfnPT3241Qlyc0C7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190235128837:android:74fabb7ca1d2d03898986c",
+        "android_client_info": {
+          "package_name": "id.ac.binus.quickhire"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHopXQnl_G4-jXZEOfnPT3241Qlyc0C7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
