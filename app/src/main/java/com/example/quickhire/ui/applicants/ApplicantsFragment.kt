@@ -94,12 +94,12 @@ class ApplicantsFragment : Fragment() {
 
             val list = ArrayList<Applicants>()
 
-            database.reference.child("applicants/${firebaseAuth.currentUser?.uid}").addValueEventListener(object: ValueEventListener {
+            database.reference.child("applicants").addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     list.clear()
                     snapshot.children.forEach { s ->
                         val data = s.getValue(Applicants::class.java)
-                        if (data != null) {
+                        if (data != null && data.uid == firebaseAuth.currentUser?.uid) {
                             list.add(data)
                         }
                     }
@@ -118,8 +118,4 @@ class ApplicantsFragment : Fragment() {
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

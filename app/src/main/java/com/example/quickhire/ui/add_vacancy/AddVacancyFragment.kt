@@ -17,6 +17,8 @@ import com.example.quickhire.Preferences
 import com.example.quickhire.ProgressCustom
 import com.example.quickhire.SkillAdapter
 import com.example.quickhire.databinding.AddSkillDialogBinding
+import com.example.quickhire.databinding.AddSuccessDialogBinding
+import com.example.quickhire.databinding.CloseSuccessDialogBinding
 import com.example.quickhire.databinding.FragmentAddVacancyBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -37,6 +39,9 @@ class AddVacancyFragment : Fragment() {
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
+
+    lateinit var skills: ArrayList<String>
+    lateinit var adapter: SkillAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,8 +84,8 @@ class AddVacancyFragment : Fragment() {
 
             val progress = ProgressCustom(requireContext())
 
-            val skills = ArrayList<String>()
-            val adapter = SkillAdapter(skills)
+            skills = ArrayList()
+            adapter = SkillAdapter(skills)
 
             binding.skillAddRv.adapter = adapter
 
@@ -136,7 +141,7 @@ class AddVacancyFragment : Fragment() {
 
                     database.reference.child("jobs/${id}").setValue(data).addOnSuccessListener {
                         progress.dismiss()
-                        Toast.makeText(context, "Job baru berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                        showScDialog()
                     }.addOnFailureListener{
                         progress.dismiss()
                         Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
@@ -148,10 +153,36 @@ class AddVacancyFragment : Fragment() {
 
 
 
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showScDialog() {
+        val dialog = AlertDialog.Builder(requireContext())
+        val binding = AddSuccessDialogBinding.inflate(LayoutInflater.from(requireContext()))
+        dialog.setView(binding.root)
+        dialog.setCancelable(false)
+
+        val d = dialog.show()
+
+        binding.okBtn.setOnClickListener {
+            d.dismiss()
+            clearAdd()
+            skills.clear()
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun clearAdd() {
+        binding.jobTitleEdt.text?.clear()
+        binding.companyNameEdt.text?.clear()
+        binding.salaryEdt.text?.clear()
+       binding.locationEdt.text?.clear()
+        binding.jobDescEdt.text?.clear()
     }
 }

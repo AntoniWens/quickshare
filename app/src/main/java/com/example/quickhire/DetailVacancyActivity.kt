@@ -135,6 +135,24 @@ class DetailVacancyActivity : AppCompatActivity() {
                     database.reference.child("jobs/${data?.jobId}").updateChildren(
                         mapOf("status" to 0)
                     ).addOnSuccessListener {
+                        database.reference.child("applicants").get().addOnSuccessListener { c ->
+                            c.children.forEach { s->
+                                if (s.child("jobId").value.toString() == data?.jobId.toString()) {
+                                    database.reference.child("applicants/${s.child("id").value.toString()}").removeValue()
+                                }
+                            }
+                        }
+                        database.reference.child("users").get().addOnSuccessListener { e ->
+                            e.children.forEach { a ->
+                                Log.d("2504", a.child("jobs").value.toString())
+                                a.child("jobs").children.forEach { b ->
+                                    Log.d("2504", b.child("jobId").value.toString())
+                                    if (b.child("jobId").value.toString() == data?.jobId.toString()) {
+                                        database.reference.child("users/${a.child("uid").value.toString()}/jobs/${b.child("jobId").value.toString()}").removeValue()
+                                    }
+                                }
+                            }
+                        }
                         progress.dismiss()
                         showScDialog()
                     }.addOnFailureListener {
@@ -150,12 +168,12 @@ class DetailVacancyActivity : AppCompatActivity() {
 
             } else {
                 val id = System.currentTimeMillis()
-                val datas = Applicants(id,"Applied for ${data?.jobTitle} (${data?.companyName})", preferences.getUser().fullName)
+                val datas = Applicants(id,"Applied for ${data?.jobTitle} (${data?.companyName})", preferences.getUser().fullName, data!!.uid, data!!.jobId)
                 progress.show()
 
-                database.reference.child("applicants/${data?.uid}/$id").setValue(datas).addOnSuccessListener {
-                    database.reference.child("jobs/${data?.jobId}/applied/$id").setValue(datas)
-                    database.reference.child("users/${firebaseAuth.currentUser?.uid}/jobs/${data?.jobId}").setValue(data)
+                database.reference.child("applicants/$id").setValue(datas).addOnSuccessListener {
+                    database.reference.child("jobs/${data.jobId}/applied/$id").setValue(datas)
+                    database.reference.child("users/${firebaseAuth.currentUser?.uid}/jobs/${data.jobId}").setValue(data)
                     progress.dismiss()
                     showScAppliedDialog()
                 }.addOnFailureListener {

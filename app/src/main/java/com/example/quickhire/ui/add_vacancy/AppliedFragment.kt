@@ -63,7 +63,6 @@ class AppliedFragment : Fragment() {
                     binding.progressBar3.isVisible = false
                     list.clear()
                     snapshot.children.forEach { e ->
-                        Log.d("2504", "ccc1")
                         skills.clear()
                         if (snapshot.exists()) {
                             e.child("skill").children.forEach { s ->
