@@ -3,27 +3,26 @@ package com.example.quickhire
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.quickhire.databinding.ActivityRegisterJobProviderBinding
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.database
+import com.example.quickhire.databinding.ActivityRegisterBinding
 
-class RegisterJobProvider : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRegisterJobProviderBinding
+class RegisterActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterJobProviderBinding.inflate(layoutInflater)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val role = intent.getIntExtra("role", 0)
+
+        if (role == 1) {
+            binding.textView7.setText("EMPLOYEE")
+        } else {
+            binding.textView7.setText("JOB PROVIDER")
+        }
 
         binding.backImg.setOnClickListener {
             finish()
@@ -37,7 +36,7 @@ class RegisterJobProvider : AppCompatActivity() {
                 Toast.makeText(this, "Data belum lengkap", Toast.LENGTH_SHORT).show()
             } else {
 
-                val intent = Intent(this, NextRegisterJobProvider::class.java)
+                val intent = Intent(this, NextRegisterActivity::class.java)
                 intent.putExtra("role", role)
                 intent.putExtra("email", email)
                 intent.putExtra("password", password)

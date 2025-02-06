@@ -32,12 +32,18 @@ class LoginActivity : AppCompatActivity() {
         database = Firebase.database
 
         binding.register.setOnClickListener {
-            val intent = Intent(this, RegisterJobProvider::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             intent.putExtra("role", role)
             startActivity(intent)
         }
 
         val preferences = Preferences(this)
+
+        if (role == 1) {
+            binding.textView7.setText("EMPLOYEE")
+        } else {
+            binding.textView7.setText("JOB PROVIDER")
+        }
 
         binding.backImg.setOnClickListener {
             finish()

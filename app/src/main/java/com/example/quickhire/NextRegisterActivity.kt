@@ -4,20 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.quickhire.databinding.ActivityNextRegisterJobProviderBinding
+import com.example.quickhire.databinding.ActivityNextRegisterBinding
+
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
 
-class NextRegisterJobProvider : AppCompatActivity() {
+class NextRegisterActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityNextRegisterJobProviderBinding
+    private lateinit var binding: ActivityNextRegisterBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private  lateinit var database: FirebaseDatabase
 
@@ -25,7 +23,7 @@ class NextRegisterJobProvider : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityNextRegisterJobProviderBinding.inflate(layoutInflater)
+        binding = ActivityNextRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
@@ -41,6 +39,13 @@ class NextRegisterJobProvider : AppCompatActivity() {
         if(role == 1) {
             binding.textView92.setText("Pilihan Bidang")
         }
+
+        if (role == 1) {
+            binding.textView7.setText("EMPLOYEE")
+        } else {
+            binding.textView7.setText("JOB PROVIDER")
+        }
+
         val preferences = Preferences(this)
         binding.backImg.setOnClickListener {
             finish()
